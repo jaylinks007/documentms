@@ -8,11 +8,13 @@ return [
         '' => 'DashboardController@index',
         'dashboard' => 'DashboardController@index',
         'register' => 'AuthController@create',
-        'login' => 'AuthController@login'
+        'login' => 'AuthController@login',
+        'download' => 'DocumentController@download'
     ],
     'POST' => [
         'register' => 'AuthController@store',
         'login' => 'AuthController@authenticate',
-        'logout' => 'AuthController@logout'
+        'logout' => 'AuthController@logout',
+        'documents' => 'DocumentController@store'
     ]
 ];

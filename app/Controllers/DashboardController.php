@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-require_once __DIR__ . '/Controller.php';
+use App\Models\Document;
 
 class DashboardController extends Controller
 {
@@ -17,12 +17,16 @@ class DashboardController extends Controller
             exit();
         }
 
-        // In the future, we will fetch user documents and admin stats here
-        // and pass them to the view.
+        // Fetch the user's documents.
+        $documentModel = new Document();
+        $documents = $documentModel->findByUser($_SESSION['user_id']);
+
+        // In a future step, we could also fetch admin stats here if the user is an admin.
 
         $data = [
             'username' => $_SESSION['username'],
-            'role_id' => $_SESSION['role_id']
+            'role_id' => $_SESSION['role_id'],
+            'documents' => $documents
         ];
 
         echo $this->view('dashboard', $data);

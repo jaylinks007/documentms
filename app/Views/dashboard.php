@@ -28,15 +28,56 @@
         <?php endif; ?>
 
         <div class="user-section mt-4">
-            <h3 class="mb-3">Document Management</h3>
             <div class="upload-form p-4 mb-4 border rounded">
                 <h4>Upload New Document</h4>
-                <p>The document upload form will be re-implemented here soon.</p>
+                <form action="/documents" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="title">Document Title</label>
+                        <input type="text" class="form-control" id="title" name="title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description (Optional)</label>
+                        <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="documentFile">Select Document</label>
+                        <input type="file" class="form-control-file" id="documentFile" name="documentFile" required>
+                    </div>
+                    <button type="submit" name="upload" class="btn btn-primary">Upload Document</button>
+                </form>
             </div>
 
             <div class="document-list mt-4">
                 <h4>Your Documents</h4>
-                <p>Your uploaded documents will be listed here soon.</p>
+                <?php if (isset($documents) && count($documents) > 0): ?>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Title</th>
+                                <th>Description</th>
+                                <th>Uploaded On</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($documents as $doc): ?>
+                            <tr>
+                                <td><?php echo htmlspecialchars($doc['title']); ?></td>
+                                <td><?php echo htmlspecialchars($doc['description']); ?></td>
+                                <td><?php echo date('M d, Y H:i', strtotime($doc['upload_date'])); ?></td>
+                                <td>
+                                    <a href="/download?file=<?php echo urlencode($doc['file_path']); ?>" class="btn btn-sm btn-success" target="_blank" rel="noopener noreferrer">View</a>
+                                    <!-- E-sign and Approval buttons will go here -->
+                                </td>
+                            </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+                <?php else: ?>
+                <div class="alert alert-info">You have not uploaded any documents yet.</div>
+                <?php endif; ?>
             </div>
         </div>
     </div>
