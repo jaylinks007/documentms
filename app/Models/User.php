@@ -55,4 +55,27 @@ class User
 
         return $stmt->fetch(\PDO::FETCH_ASSOC);
     }
+
+    /**
+     * Get all users, optionally excluding one by ID.
+     * @param int|null $excludeId The ID of the user to exclude.
+     * @return array An array of users.
+     */
+    public function getAll($excludeId = null)
+    {
+        $conn = $this->db->connect();
+        $sql = "SELECT id, username FROM users";
+        $params = [];
+
+        if ($excludeId !== null) {
+            $sql .= " WHERE id != ?";
+            $params[] = $excludeId;
+        }
+
+        $sql .= " ORDER BY username ASC";
+
+        $stmt = $conn->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
 }

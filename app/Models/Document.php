@@ -58,4 +58,17 @@ class Document
         $stmt->execute([$userId]);
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
+
+    /**
+     * Find a single document by its ID.
+     * @param int $id The ID of the document.
+     * @return mixed The document data or false if not found.
+     */
+    public function findById($id)
+    {
+        $conn = $this->db->connect();
+        $stmt = $conn->prepare("SELECT * FROM documents WHERE id = ?");
+        $stmt->execute([$id]);
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
+    }
 }

@@ -66,9 +66,9 @@
                                 <td><?php echo htmlspecialchars($doc['title']); ?></td>
                                 <td><?php echo htmlspecialchars($doc['description']); ?></td>
                                 <td><?php echo date('M d, Y H:i', strtotime($doc['upload_date'])); ?></td>
-                                <td>
-                                    <a href="/download?file=<?php echo urlencode($doc['file_path']); ?>" class="btn btn-sm btn-success" target="_blank" rel="noopener noreferrer">View</a>
-                                    <!-- E-sign and Approval buttons will go here -->
+                                <td class="d-flex">
+                                    <a href="/download?file=<?php echo urlencode($doc['file_path']); ?>" class="btn btn-sm btn-success mr-2" target="_blank" rel="noopener noreferrer">View</a>
+                                    <a href="/approvals/create?document_id=<?php echo $doc['id']; ?>" class="btn btn-sm btn-primary">Send for Approval</a>
                                 </td>
                             </tr>
                             <?php endforeach; ?>

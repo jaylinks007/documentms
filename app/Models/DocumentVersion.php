@@ -28,4 +28,20 @@ class DocumentVersion
             $data['file_path']
         ]);
     }
+
+    /**
+     * Get the ID of the latest version for a given document.
+     * @param int $documentId
+     * @return mixed The version ID or false if not found.
+     */
+    public function getLatestVersionId($documentId)
+    {
+        $conn = $this->db->connect();
+        $stmt = $conn->prepare(
+            "SELECT id FROM document_versions WHERE document_id = ? ORDER BY version_number DESC LIMIT 1"
+        );
+        $stmt->execute([$documentId]);
+        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+        return $result ? $result['id'] : false;
+    }
 }

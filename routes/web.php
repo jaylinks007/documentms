@@ -9,12 +9,14 @@ return [
         'dashboard' => 'DashboardController@index',
         'register' => 'AuthController@create',
         'login' => 'AuthController@login',
-        'download' => 'DocumentController@download'
+        'download' => 'DocumentController@download',
+        'approvals/create' => 'ApprovalController@create'
     ],
     'POST' => [
         'register' => 'AuthController@store',
         'login' => 'AuthController@authenticate',
         'logout' => 'AuthController@logout',
-        'documents' => 'DocumentController@store'
+        'documents' => 'DocumentController@store',
+        'approvals' => 'ApprovalController@store'
     ]
 ];
