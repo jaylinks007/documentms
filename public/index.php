@@ -4,13 +4,15 @@
 
 session_start();
 
-// For now, we will require files manually.
-// In a more complex app, an autoloader (like Composer's) would be used.
-require_once __DIR__ . '/../core/Database.php';
-require_once __DIR__ . '/../core/Router.php';
+// Require the autoloader. This will handle loading all namespaced classes.
+require_once __DIR__ . '/../app/Core/autoloader.php';
 
-// A simple helper function to parse the request URI.
-function get_uri() {
+/**
+ * A simple helper function to parse the request URI.
+ * @return string
+ */
+function get_uri()
+{
     return trim(
         parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH),
         '/'
@@ -18,14 +20,17 @@ function get_uri() {
 }
 
 // Load the routes and instantiate the router.
-$router = Router::load(__DIR__ . '/../routes/web.php');
+$router = App\Core\Router::load(__DIR__ . '/../routes/web.php');
 
-// Direct the request to the appropriate handler based on the URI and request method.
-// In the next phase, this will call a controller method which will return a view.
+// Direct the request to the appropriate handler.
 try {
-    echo $router->direct(get_uri(), $_SERVER['REQUEST_METHOD']);
+    // The router will find the correct controller and method,
+    // and that method will echo the rendered view.
+    $router->direct(get_uri(), $_SERVER['REQUEST_METHOD']);
 } catch (Exception $e) {
-    // Basic error handling
+    // A simple error handler. In a real app, this would be more robust.
     http_response_code(500);
+    // Never show detailed error messages in production.
+    // For development, this is fine.
     echo 'An error occurred: ' . $e->getMessage();
 }

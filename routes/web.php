@@ -1,8 +1,18 @@
 <?php
 
-// This file will hold the routes for the application.
+// This file holds the routes for the application.
 // The router will load this file to know which controller to call.
 
 return [
-    // Example: 'GET' => [ '/' => 'HomeController@index' ]
+    'GET' => [
+        '' => 'DashboardController@index',
+        'dashboard' => 'DashboardController@index',
+        'register' => 'AuthController@create',
+        'login' => 'AuthController@login'
+    ],
+    'POST' => [
+        'register' => 'AuthController@store',
+        'login' => 'AuthController@authenticate',
+        'logout' => 'AuthController@logout'
+    ]
 ];
