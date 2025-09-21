@@ -20,6 +20,18 @@
                 <input type="email" name="email" id="email" class="form-control" required>
             </div>
             <div class="form-group">
+                <label for="organisation_name">Organisation Name (Optional)</label>
+                <input type="text" name="organisation_name" id="organisation_name" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="department">Department (Optional)</label>
+                <input type="text" name="department" id="department" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="project_name">Project Name (Optional)</label>
+                <input type="text" name="project_name" id="project_name" class="form-control">
+            </div>
+            <div class="form-group">
                 <label for="password">Password</label>
                 <input type="password" name="password" id="password" class="form-control" required>
             </div>

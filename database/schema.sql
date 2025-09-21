@@ -110,6 +110,9 @@ CREATE TABLE `users` (
   `username` varchar(50) NOT NULL,
   `password` varchar(255) NOT NULL,
   `email` varchar(100) NOT NULL,
+  `department` varchar(255) DEFAULT NULL,
+  `project_name` varchar(255) DEFAULT NULL,
+  `organisation_name` varchar(255) DEFAULT NULL,
   `role_id` int(11) DEFAULT 3,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

@@ -6,6 +6,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = trim($_POST['username']);
     $email = trim($_POST['email']);
     $password = trim($_POST['password']);
+    $organisation_name = !empty(trim($_POST['organisation_name'])) ? trim($_POST['organisation_name']) : null;
+    $department = !empty(trim($_POST['department'])) ? trim($_POST['department']) : null;
+    $project_name = !empty(trim($_POST['project_name'])) ? trim($_POST['project_name']) : null;
 
     if (empty($username) || empty($email) || empty($password)) {
         header('Location: ../public/register.php?error=emptyfields');
@@ -31,10 +34,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
 
             // Insert new user
-            $stmt = $conn->prepare("INSERT INTO users (username, email, password) VALUES (:username, :email, :password)");
+            $stmt = $conn->prepare(
+                "INSERT INTO users (username, email, password, organisation_name, department, project_name)
+                 VALUES (:username, :email, :password, :organisation_name, :department, :project_name)"
+            );
             $stmt->bindParam(':username', $username);
             $stmt->bindParam(':email', $email);
             $stmt->bindParam(':password', $hashed_password);
+            $stmt->bindParam(':organisation_name', $organisation_name);
+            $stmt->bindParam(':department', $department);
+            $stmt->bindParam(':project_name', $project_name);
 
             if ($stmt->execute()) {
                 header('Location: ../public/login.php?registration=success');
