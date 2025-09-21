@@ -1,6 +1,7 @@
 <?php
 
-require_once 'config.php';
+// The path needs to go up one level from `core` and then into `config`.
+require_once __DIR__ . '/../config/app.php';
 
 class Database {
     private $host = DB_HOST;
