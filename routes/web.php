@@ -10,13 +10,15 @@ return [
         'register' => 'AuthController@create',
         'login' => 'AuthController@login',
         'download' => 'DocumentController@download',
-        'approvals/create' => 'ApprovalController@create'
+        'approvals/create' => 'ApprovalController@create',
+        'approvals' => 'ApprovalController@show'
     ],
     'POST' => [
         'register' => 'AuthController@store',
         'login' => 'AuthController@authenticate',
         'logout' => 'AuthController@logout',
         'documents' => 'DocumentController@store',
-        'approvals' => 'ApprovalController@store'
+        'approvals' => 'ApprovalController@store',
+        'approvals/update' => 'ApprovalController@update'
     ]
 ];

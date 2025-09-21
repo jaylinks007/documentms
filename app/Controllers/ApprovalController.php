@@ -84,4 +84,72 @@ class ApprovalController extends Controller
         }
         exit();
     }
+
+    /**
+     * Show a single approval request page.
+     */
+    public function show()
+    {
+        if (empty($_GET['id'])) {
+            http_response_code(400);
+            echo "Bad Request: No approval ID specified.";
+            exit();
+        }
+
+        $approvalId = $_GET['id'];
+        $approvalModel = new \App\Models\Approval();
+        $approval = $approvalModel->findById($approvalId);
+
+        // Security check: ensure the request exists and the logged-in user is the approver.
+        if (!$approval || $approval['approver_id'] != $_SESSION['user_id']) {
+            http_response_code(403);
+            echo "Forbidden: You are not authorized to view this approval request.";
+            exit();
+        }
+
+        echo $this->view('approvals.show', ['approval' => $approval]);
+    }
+
+    /**
+     * Update the status of an approval request.
+     */
+    public function update()
+    {
+        if (empty($_POST['approval_id']) || empty($_POST['action'])) {
+            http_response_code(400);
+            echo "Bad Request: Missing required form data.";
+            exit();
+        }
+
+        $approvalId = $_POST['approval_id'];
+        $action = $_POST['action'];
+        $comments = trim($_POST['comments'] ?? '');
+
+        // Validate action
+        if (!in_array($action, ['approved', 'rejected'])) {
+            http_response_code(400);
+            echo "Bad Request: Invalid action specified.";
+            exit();
+        }
+
+        $approvalModel = new \App\Models\Approval();
+        $approval = $approvalModel->findById($approvalId);
+
+        // Security check: ensure the request exists and the logged-in user is the approver.
+        if (!$approval || $approval['approver_id'] != $_SESSION['user_id']) {
+            http_response_code(403);
+            echo "Forbidden: You are not authorized to update this approval request.";
+            exit();
+        }
+
+        // Update the approval status
+        $success = $approvalModel->updateStatus($approvalId, $action, $comments);
+
+        if ($success) {
+            header('Location: /dashboard?approval_action=success');
+        } else {
+            header('Location: /approvals?id=' . $approvalId . '&error=update_failed');
+        }
+        exit();
+    }
 }

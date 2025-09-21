@@ -27,6 +27,36 @@
         </div>
         <?php endif; ?>
 
+        <?php if (isset($pending_approvals) && count($pending_approvals) > 0): ?>
+        <div class="pending-approvals-section mt-4 p-3 bg-white rounded border">
+            <h4 class="mb-3">Documents Awaiting Your Approval</h4>
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>Document Title</th>
+                            <th>From</th>
+                            <th>Received On</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($pending_approvals as $approval): ?>
+                        <tr>
+                            <td><?php echo htmlspecialchars($approval['title']); ?></td>
+                            <td><?php echo htmlspecialchars($approval['sender_name']); ?></td>
+                            <td><?php echo date('M d, Y H:i', strtotime($approval['request_date'])); ?></td>
+                            <td>
+                                <a href="/approvals?id=<?php echo $approval['approval_id']; ?>" class="btn btn-sm btn-warning">Review</a>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <?php endif; ?>
+
         <div class="user-section mt-4">
             <div class="upload-form p-4 mb-4 border rounded">
                 <h4>Upload New Document</h4>

@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\Document;
+use App\Models\Approval;
 
 class DashboardController extends Controller
 {
@@ -17,16 +18,19 @@ class DashboardController extends Controller
             exit();
         }
 
-        // Fetch the user's documents.
+        // Fetch the user's own documents.
         $documentModel = new Document();
         $documents = $documentModel->findByUser($_SESSION['user_id']);
 
-        // In a future step, we could also fetch admin stats here if the user is an admin.
+        // Fetch documents awaiting the user's approval.
+        $approvalModel = new Approval();
+        $pendingApprovals = $approvalModel->findPendingForUser($_SESSION['user_id']);
 
         $data = [
             'username' => $_SESSION['username'],
             'role_id' => $_SESSION['role_id'],
-            'documents' => $documents
+            'documents' => $documents,
+            'pending_approvals' => $pendingApprovals
         ];
 
         echo $this->view('dashboard', $data);
