@@ -59,8 +59,61 @@ if (!isset($_SESSION['user_id'])) {
         <?php endif; ?>
 
         <div class="user-section mt-4">
-            <h3>Your Dashboard</h3>
-            <p>This is your dashboard. More features will be added soon.</p>
+            <div class="upload-form p-4 mb-4 border rounded">
+                <h4>Upload New Document</h4>
+                <form action="../src/upload_handler.php" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="title">Document Title</label>
+                        <input type="text" class="form-control" id="title" name="title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description (Optional)</label>
+                        <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="documentFile">Select Document</label>
+                        <input type="file" class="form-control-file" id="documentFile" name="documentFile" required>
+                    </div>
+                    <button type="submit" name="upload" class="btn btn-primary">Upload Document</button>
+                </form>
+            </div>
+
+            <div class="document-list mt-4">
+                <h4>Your Documents</h4>
+                <?php
+                require_once __DIR__ . '/../src/user_documents.php';
+
+                if (count($user_documents) > 0):
+                ?>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Title</th>
+                                <th>Description</th>
+                                <th>Uploaded On</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($user_documents as $doc): ?>
+                            <tr>
+                                <td><?php echo htmlspecialchars($doc['title']); ?></td>
+                                <td><?php echo htmlspecialchars($doc['description']); ?></td>
+                                <td><?php echo date('M d, Y H:i', strtotime($doc['upload_date'])); ?></td>
+                                <td>
+                                    <a href="../<?php echo htmlspecialchars($doc['file_path']); ?>" class="btn btn-sm btn-success" target="_blank" rel="noopener noreferrer">View</a>
+                                    <!-- E-sign and Approval buttons will go here -->
+                                </td>
+                            </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+                <?php else: ?>
+                <div class="alert alert-info">You have not uploaded any documents yet.</div>
+                <?php endif; ?>
+            </div>
         </div>
     </div>
 </body>
